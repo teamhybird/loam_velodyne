@@ -1,4 +1,4 @@
-FROM hybird/x86_64/velodyne
+FROM ros:kinetic-ros-core
 
 RUN apt-get -qq update \
     && apt-get install -y libpcl-dev
@@ -17,6 +17,7 @@ RUN source /opt/ros/kinetic/setup.bash \
 
 CMD cd /home/catkin_ws \
     && source devel/setup.bash \
-    && roslaunch loam_velodyne loam_velodyne.launch
+    && sleep 5 \
+    && roslaunch loam_velodyne hector_loam_velodyne.launch
 
     
