@@ -35,6 +35,10 @@
 #include "loam_velodyne/LaserOdometry.h"
 #include "loam_velodyne/common.h"
 #include "math_utils.h"
+#include <iostream>
+#include <ctime>
+#include <time.h>
+
 
 namespace loam
 {
@@ -260,10 +264,13 @@ namespace loam
     while (status)
     {
       ros::spinOnce();
-
+      float now = clock()/(CLOCKS_PER_SEC/1000);
+      //std::cout<<"NOW TIM"<<now<<std::endl;
       // try processing new data
       process();
-
+      float after = clock()/(CLOCKS_PER_SEC/1000);
+      //std::cout<<"AFTER TIM"<<after<<std::endl;
+      //std::cout<<","<<(after-now)<<","<<std::endl;
       status = ros::ok();
       rate.sleep();
     }
@@ -312,6 +319,7 @@ namespace loam
     _pubLaserOdometry.publish(_laserOdometryMsg);
 
     _laserOdometryTrans.stamp_ = _timeSurfPointsLessFlat;
+    //std::cout<<((double) (_laserOdometryMsg.header.stamp.sec)) + (((double) _laserOdometryMsg.header.stamp.nsec) / 1000000000)<<std::endl;
     _laserOdometryTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
     _laserOdometryTrans.setOrigin(tf::Vector3(transformSum().pos.x(), transformSum().pos.y(), transformSum().pos.z()));
     _tfBroadcaster.sendTransform(_laserOdometryTrans);

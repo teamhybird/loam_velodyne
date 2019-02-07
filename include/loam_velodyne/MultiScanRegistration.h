@@ -88,7 +88,7 @@ public:
   /** Multi scan mapper for Velodyne HDL-64E according to data sheet. */
   static inline MultiScanMapper Velodyne_HDL_64E() { return MultiScanMapper(-24.9f, 2, 64); };
 
-  static inline MultiScanMapper Ouster_64E() { return MultiScanMapper(-16, 17, 64); };
+  static inline MultiScanMapper Ouster_64E() { return MultiScanMapper(-16.6f, 16.6f, 64); };
 
 
 private:

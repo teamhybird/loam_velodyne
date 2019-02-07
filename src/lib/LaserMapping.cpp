@@ -32,6 +32,7 @@
 
 #include "loam_velodyne/LaserMapping.h"
 #include "loam_velodyne/common.h"
+#include <iostream>
 
 namespace loam
 {
@@ -303,6 +304,7 @@ void LaserMapping::publishResult()
    _pubOdomAftMapped.publish(_odomAftMapped);
 
    _aftMappedTrans.stamp_ = _timeLaserOdometry;
+   //std::cout<<((double) (_odomAftMapped.header.stamp.sec)) + (((double) _odomAftMapped.header.stamp.nsec) / 1000000000)<<std::endl;
    _aftMappedTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
    _aftMappedTrans.setOrigin(tf::Vector3(transformAftMapped().pos.x(),
                                          transformAftMapped().pos.y(),

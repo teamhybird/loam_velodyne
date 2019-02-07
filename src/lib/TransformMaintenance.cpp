@@ -31,6 +31,7 @@
 //     Robotics: Science and Systems Conference (RSS). Berkeley, CA, July 2014.
 
 #include "loam_velodyne/TransformMaintenance.h"
+#include <iostream>
 
 namespace loam
 {
@@ -89,6 +90,7 @@ void TransformMaintenance::laserOdometryHandler(const nav_msgs::Odometry::ConstP
    _pubLaserOdometry2.publish(_laserOdometry2);
 
    _laserOdometryTrans2.stamp_ = laserOdometry->header.stamp;
+    //std::cout<<((double) (laserOdometry->header.stamp.sec)) + (((double) laserOdometry->header.stamp.nsec) / 1000000000)<<std::endl;
    _laserOdometryTrans2.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
    _laserOdometryTrans2.setOrigin(tf::Vector3(transformMapped()[3], transformMapped()[4], transformMapped()[5]));
    _tfBroadcaster2.sendTransform(_laserOdometryTrans2);
