@@ -8,8 +8,8 @@
     <!-- <param name="lidar" value="OS1-64E" /> options: VLP-16  HDL-32  HDL-64E -->
     <param name="scanPeriod" value="$(arg scanPeriod)" />
 
-    <remap from="/multi_scan_points" to="/os1_cloud_node/points" />
-    <remap from="/imu/data" to="/os1_cloud_node/imu" />
+    <remap from="/multi_scan_points" to="$(env topic_points)" />
+    <remap from="/imu/data" to="$(env topic_imu)" />
     <!-- <remap from="/imu/data" to="/djiros/imu" />   -->
   </node>
 

@@ -17,7 +17,7 @@ RUN source /opt/ros/kinetic/setup.bash \
 
 CMD cd /home/catkin_ws \
     && source devel/setup.bash \
-    && sleep 1 \
+    && sleep 5 \
     && roslaunch loam_velodyne loam_velodyne.launch
 
     
