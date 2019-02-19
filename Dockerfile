@@ -5,6 +5,8 @@ RUN apt-get -qq update \
 
 COPY package.xml /home/catkin_ws/src/loam_velodyne/package.xml
 
+COPY CMakeLists.txt /home/catkin_ws/src/loam_velodyne/CMakeLists.txt
+ 
 RUN rosdep install --as-root apt:yes -r --from-paths /home/catkin_ws/ --ignore-src --rosdistro kinetic -y 
 
 COPY . /home/catkin_ws/src/loam_velodyne/
