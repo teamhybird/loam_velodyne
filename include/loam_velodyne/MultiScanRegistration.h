@@ -129,7 +129,7 @@ private:
    * @param laserCloudIn the new input cloud to process
    * @param scanTime the scan (message) timestamp
    */
-  void process(const pcl::PointCloud<pcl::PointXYZ>& laserCloudIn, const Time& scanTime);
+  void process(const pcl::PointCloud<pcl::PointXYZI>& laserCloudIn, const Time& scanTime);
 
 private:
   int _systemDelay = 20;             ///< system startup delay counter

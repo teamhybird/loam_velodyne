@@ -1,0 +1,12 @@
+
+
+FROM ros:kinetic-ros-core
+
+
+COPY . /home/catkin_ws/src/loam_velodyne/
+
+RUN apt-get -qq update \
+    && apt-get install -y libpcl-dev
+ 
+RUN rosdep install --as-root apt:yes -r --from-paths /home/catkin_ws/ --ignore-src --rosdistro kinetic -y 
+

@@ -198,6 +198,7 @@ void LaserMapping::laserCloudFullResHandler(const sensor_msgs::PointCloud2ConstP
 {
    _timeLaserCloudFullRes = laserCloudFullResMsg->header.stamp;
    laserCloud().clear();
+   
    pcl::fromROSMsg(*laserCloudFullResMsg, laserCloud());
    _newLaserCloudFullRes = true;
 }
@@ -224,7 +225,7 @@ void LaserMapping::imuHandler(const sensor_msgs::Imu::ConstPtr& imuIn)
    tf::Quaternion orientation;
    tf::quaternionMsgToTF(imuIn->orientation, orientation);
    tf::Matrix3x3(orientation).getRPY(roll, pitch, yaw);
-   updateIMU({ fromROSTime(imuIn->header.stamp) , roll, pitch });
+   updateIMU({ fromROSTime(imuIn->header.stamp) , roll, pitch});
 }
 
 void LaserMapping::spin()

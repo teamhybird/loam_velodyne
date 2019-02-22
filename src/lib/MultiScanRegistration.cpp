@@ -32,10 +32,17 @@
 
 #include "loam_velodyne/MultiScanRegistration.h"
 #include "math_utils.h"
-
+#include <stdlib.h>
+#include <cstring>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <pcl_conversions/pcl_conversions.h>
 
+//const unsigned long RAND_MAX_PLUS_1 = RAND_MAX + 1;
 
+//const unsigned long BIG_RAND_MAX = RAND_MAX_PLUS_1 * RAND_MAX_PLUS_1 - 1;
+using namespace std;
 namespace loam {
 
 MultiScanMapper::MultiScanMapper(const float& lowerBound,
@@ -151,7 +158,7 @@ void MultiScanRegistration::handleCloudMessage(const sensor_msgs::PointCloud2Con
   }
 
   // fetch new input cloud
-  pcl::PointCloud<pcl::PointXYZ> laserCloudIn;
+  pcl::PointCloud<pcl::PointXYZI> laserCloudIn;
   pcl::fromROSMsg(*laserCloudMsg, laserCloudIn);
   
   process(laserCloudIn, fromROSTime(laserCloudMsg->header.stamp));
@@ -159,7 +166,7 @@ void MultiScanRegistration::handleCloudMessage(const sensor_msgs::PointCloud2Con
 
 
 
-void MultiScanRegistration::process(const pcl::PointCloud<pcl::PointXYZ>& laserCloudIn, const Time& scanTime)
+void MultiScanRegistration::process(const pcl::PointCloud<pcl::PointXYZI>& laserCloudIn, const Time& scanTime)
 {
   size_t cloudSize = laserCloudIn.size();
   
@@ -172,7 +179,8 @@ void MultiScanRegistration::process(const pcl::PointCloud<pcl::PointXYZ>& laserC
   } else if (endOri - startOri < M_PI) {
     endOri += 2 * M_PI;
   }
-
+  //unsigned long bigRand = rand() * (RAND_MAX_PLUS_1) + rand();
+ 
   bool halfPassed = false;
   pcl::PointXYZI point;
   _laserCloudScans.resize(_scanMapper.getNumberOfScanRings());
@@ -181,9 +189,14 @@ void MultiScanRegistration::process(const pcl::PointCloud<pcl::PointXYZ>& laserC
 
   // extract valid points from input cloud
   for (int i = 0; i < cloudSize; i++) {
+    //float scale=RAND_MAX+1.;
+    //float base=rand()/scale;
+    //float fine=rand()/scale;
     point.x = laserCloudIn[i].y;
     point.y = laserCloudIn[i].z;
     point.z = laserCloudIn[i].x;
+    //point.intensity = 0.7;
+    //cout<<point.intensity<<endl;
 
     // skip NaN and INF valued points
     if (!pcl_isfinite(point.x) ||
@@ -228,7 +241,9 @@ void MultiScanRegistration::process(const pcl::PointCloud<pcl::PointXYZ>& laserC
 
     // calculate relative scan time based on point orientation
     float relTime = config().scanPeriod * (ori - startOri) / (endOri - startOri);
-    point.intensity = scanID + relTime;
+    point.intensity = scanID + relTime;//scanID + relTime;
+    //cout<<"SCANID"<<point.intensity<<endl;
+    //cout<<"INTENSITY"<<scanID + relTime<<endl;
 
     projectPointToStartOfSweep(point, relTime);
 

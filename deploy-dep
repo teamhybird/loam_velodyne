@@ -1,0 +1,4 @@
+#!/bin/sh
+
+rsync -avrx --exclude '.git' . nvidia@192.168.5.123:/home/nvidia/lou/loam_velodyne
+ssh nvidia@192.168.5.123 'docker build -f ~/lou/loam_velodyne/Dependencies  -t hybird/aarch64/loam_velodyne-dep /home/nvidia/lou/loam_velodyne'

@@ -32,9 +32,13 @@
 
 #include "loam_velodyne/ScanRegistration.h"
 #include "math_utils.h"
-
+#include <cstring>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <tf/transform_datatypes.h>
 
+using namespace std;
 
 namespace loam {
 
@@ -167,12 +171,17 @@ void ScanRegistration::handleIMUMessage(const sensor_msgs::Imu::ConstPtr& imuIn)
   tf::quaternionMsgToTF(imuIn->orientation, orientation);
   double roll, pitch, yaw;
   tf::Matrix3x3(orientation).getRPY(roll, pitch, yaw);
+  //cout<<"IMU: "<<","<<orientation.x()<<","<<orientation.y()<<","<<orientation.z()<<","<<orientation.w()<<endl;
+
+  //cout<<"RPY: "<<","<<roll*(180/M_PI)<<","<<pitch*(180/M_PI)<<","<<yaw*(180/M_PI)<<endl;
 
   Vector3 acc;
+ 
   acc.x() = float(imuIn->linear_acceleration.y - sin(roll) * cos(pitch) * 9.81);
-  acc.y() = float(imuIn->linear_acceleration.z - cos(roll) * cos(pitch) * 9.81);
+  acc.y() = float(-imuIn->linear_acceleration.z - cos(roll) * cos(pitch) * 9.81);
   acc.z() = float(imuIn->linear_acceleration.x + sin(pitch)             * 9.81);
-
+  //cout<<"ACCIMU: "<<imuIn->linear_acceleration.y<<","<<imuIn->linear_acceleration.z<<","<<imuIn->linear_acceleration.x<<endl;
+  //cout<<"ACC: "<<acc.x()<<","<<acc.y()<<","<<acc.z()<<endl;
   IMUState newState;
   newState.stamp = fromROSTime( imuIn->header.stamp);
   newState.roll = roll;
