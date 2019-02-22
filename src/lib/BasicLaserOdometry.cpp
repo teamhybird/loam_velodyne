@@ -39,7 +39,7 @@ BasicLaserOdometry::BasicLaserOdometry(float scanPeriod, size_t maxIterations) :
 
 void BasicLaserOdometry::transformToStart(const pcl::PointXYZI& pi, pcl::PointXYZI& po)
 {
-   float s = (1.f / _scanPeriod) * (pi.intensity - int(pi.intensity));
+   float s = 1;//(1.f / _scanPeriod) * (pi.intensity - int(pi.intensity));
 
    po.x = pi.x - s * _transform.pos.x();
    po.y = pi.y - s * _transform.pos.y();
@@ -62,7 +62,7 @@ size_t BasicLaserOdometry::transformToEnd(pcl::PointCloud<pcl::PointXYZI>::Ptr& 
    {
       pcl::PointXYZI& point = cloud->points[i];
 
-      float s = (1.f / _scanPeriod) * (point.intensity - int(point.intensity));
+      float s = 1;//(1.f / _scanPeriod) * (point.intensity - int(point.intensity));
 
       point.x -= s * _transform.pos.x();
       point.y -= s * _transform.pos.y();

@@ -241,7 +241,7 @@ void MultiScanRegistration::process(const pcl::PointCloud<pcl::PointXYZI>& laser
 
     // calculate relative scan time based on point orientation
     float relTime = config().scanPeriod * (ori - startOri) / (endOri - startOri);
-    point.intensity = scanID + relTime;//scanID + relTime;
+    point.intensity = laserCloudIn[i].intensity;//scanID + relTime;//scanID + relTime;
     //cout<<"SCANID"<<point.intensity<<endl;
     //cout<<"INTENSITY"<<scanID + relTime<<endl;
 
